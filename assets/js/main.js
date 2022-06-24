@@ -1,50 +1,63 @@
-function main() {
-    const form = document.querySelector('.form');
-    const resultado = document.querySelector('.resultado');
+const form = document.querySelector('.form');
 
-    const pessoas = [];
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const inputPeso = form.querySelector('#peso');
+    const inputAltura = form.querySelector('#altura');
 
-    function recebeEventoForm(evento) {
-        evento.preventDefault();
-        const peso = form.querySelector('#peso');
-        const altura = form.querySelector('#altura');
+    const peso = Number(inputPeso.value);
+    const altura = Number(inputAltura.value);
 
-        pessoas.push({
-            peso: peso.value,
-            altura: altura.value
-        });
-
-        if (peso.value === "" || altura.value === ""){
-            alert ("Digite seu peso e altura para prosseguir!")
-            return
-        }
-
-        console.log(pessoas);
-
-        resultado.innerHTML += `<p>${peso.value}Kg ${altura.value}m</p>`;
-
-        let imc = peso.value / (altura.value * altura.value);
-        if (imc < 18.5) {
-            imcNome = 'Se eu fosse você começaria a comer um pouco mais!';
-        }
-        else if (imc >= 18.5 && imc <= 24.9) {
-            imcNome = 'Parabéns! Você está no seu peso ideal.';
-        }
-        else if (imc >= 25 && imc <= 29.9) {
-            imcNome = 'Emagreça amigo(a), está um pouco acima do que é o esperado para você!';
-        }
-        else if (imc >= 30 && imc <= 34.9) {
-            imcNome = 'Procure um médico, mas sem pressa... Vocês está Obeso! :(';
-        }
-        else if (imc >= 35 && imc <= 39.9) {
-            imcNome = 'Procure um médico com urgência!!!';
-        } else {
-            imcNome = 'Pode colocar pra assar já.'
-        }
-        resultado.innerHTML += `<p>O seu IMC é ${Math.round(imc)}<br>${imcNome}</p>`;
+    if (!peso) {
+        setResultado('Peso inválido');
+        return;
+    }
+    if (!altura) {
+        setResultado('Altura inválida');
+        return;
     }
 
-    form.addEventListener('submit', recebeEventoForm);
+    const imc = getImc(peso, altura);
+    const nivelImc = getNivelImc(imc);
 
+    const msg = `<p>O seu IMC é ${imc}<br>${nivelImc}</p>`;
+
+    setResultado(msg, true);
+});
+
+function getNivelImc(imc) {
+    const nivel = ['Se eu fosse você começaria a comer um pouco mais!', 'Parabéns! Você está no seu peso ideal.', 'Emagreça amigo(a), está um pouco acima do que é o esperado para você!', 'Olha, você está no nível de obesidade grau 1, mas não se preocupe, faça regime que tudo vai se resolver!', 'Procure um médico com urgência!!! Seu nível de obesidade é grau 2', 'Pode colocar pra assar já.'];
+
+    if (imc >= 39.9) return nivel[5];
+    if (imc >= 34.9) return nivel[4];
+    if (imc >= 29.9) return nivel[3];
+    if (imc >= 24.9) return nivel[2];
+    if (imc >= 18.5) return nivel[1];
+    if (imc < 18.5) return nivel[0];
 }
-main();
+
+function getImc(peso, altura) {
+    const imc = peso / altura ** 2;
+    return imc.toFixed(2);
+}
+
+function criarP() {
+    const p = document.createElement('p');
+    return p;
+}
+
+function setResultado(msg, isValid) {
+    const resultado = document.querySelector('.resultado');
+    resultado.innerHTML = '';
+
+    const p = criarP();
+
+    if (isValid) {
+        p.classList.add('paragrafo-resultado');
+    } else {
+        p.classList.add('bad');
+    }
+
+    p.innerHTML = msg;
+    resultado.appendChild(p);
+}
