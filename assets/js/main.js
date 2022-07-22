@@ -1,6 +1,6 @@
 const form = document.querySelector('.form');
 
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', function(e) {
     e.preventDefault();
     const inputPeso = form.querySelector('#peso');
     const inputAltura = form.querySelector('#altura');
@@ -26,7 +26,7 @@ form.addEventListener('submit', function (e) {
 });
 
 function getNivelImc(imc) {
-    const nivel = ['Se eu fosse você começaria a comer um pouco mais!', 'Parabéns! Você está no seu peso ideal.', 'Emagreça amigo(a), está um pouco acima do que é o esperado para você!', 'Olha, você está no nível de obesidade grau 1, mas não se preocupe, faça regime que tudo vai se resolver!', 'Procure um médico com urgência!!! Seu nível de obesidade é grau 2', 'Pode colocar pra assar já.'];
+    const nivel = ['Se eu fosse você começaria a comer um pouco mais!', 'Parabéns! Você está no seu peso ideal.', 'Emagreça amigo(a), está um pouco acima do que é o esperado para você!', 'Olha, você está no nível de obesidade grau 1, mas não se preocupe, faça regime que tudo vai se resolver!', 'Procure um médico com urgência!!! Seu nível de obesidade é grau 2', 'Seu nível de obesidade é grau 3.'];
 
     if (imc >= 39.9) return nivel[5];
     if (imc >= 34.9) return nivel[4];
